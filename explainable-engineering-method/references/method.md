@@ -1,194 +1,175 @@
 # EEM v0.1 — Method specification
 
-Status: operational draft for trial. The method's usefulness has not yet been established through project outcomes.
+EEM is a way to keep a project understandable from the first question through the finished change. It connects the intended result, the implementation, the checks that were run, and the understanding needed to maintain the system later.
 
-## Contents
+**Status:** operational draft for trial. Real project outcomes have not yet established how effective the method is.
 
-1. Purpose and applicability
-2. Principles and terminology
-3. Working structure and traceability
-4. Roles and authority
-5. Rigor selection
-6. Lifecycle
-7. Verification and evidence
-8. Human explanation
-9. Completion and exceptions
-10. Maintenance and adoption
+## How to use this guide
 
-## 1. Purpose and applicability
+Start with the smallest piece of work that matters. Choose a workflow and a level of detail that fit the risk. Reuse the project's existing issue, task, pull request, or notes when they already contain the needed information.
 
-EEM helps people build, change, investigate, and maintain systems they can explain. It addresses both system behavior and the relationship between a claim and the evidence supporting it.
+EEM can be used with software, data, models, hardware interfaces, and combinations of them. It does not prescribe a language, framework, architecture, folder layout, or development tool. It also does not by itself establish security, regulatory compliance, scientific validity, or production readiness.
 
-For important work, a responsible person should be able to explain why it exists, where it lives, what its boundaries are, why significant decisions were made, what has been verified, and how failure would be investigated.
+## 1. The principles
 
-The method can govern software, data, models, hardware interfaces, and combinations of these. Domain suitability must be tested. EEM does not prescribe a programming language, architecture, directory tree, or development tool. It does not by itself establish security, regulatory compliance, scientific validity, or operational readiness.
+1. **A claim needs support.** An intention, an implementation, and an observed result are three different things.
+2. **People need to understand what they own.** An assistant can write a helpful explanation, but that does not prove that the responsible person understands the system.
+3. **Important boundaries should be visible.** Describe the responsibility, inputs, outputs, dependencies, side effects, and relevant failures.
+4. **Use more rigor when the stakes or uncertainty are higher.** Code size and document count are poor substitutes for risk assessment.
+5. **Every artifact should earn its place.** Keep a document or step when it helps someone decide, check, understand, or maintain the work.
+6. **Trace meaningful relationships.** Connect requirements, decisions, code, checks, and results without forcing every line into a tracking table.
+7. **Keep the map current.** When behavior or assumptions change, review the records and evidence that depend on them.
 
-General use begins with a small project trial. Do not retrofit an entire repository merely to make it resemble a template.
+## 2. A few terms
 
-## 2. Principles and terminology
-
-### Core principles
-
-1. Claims require proportionate evidence. A stated intention, an implementation, and an observed result are different things.
-2. Human understanding is checked through human performance. An explanation produced by an assistant is supporting material.
-3. Boundaries are explicit where ambiguity matters: responsibilities, inputs, outputs, dependencies, side effects, and failures.
-4. Rigor follows impact, uncertainty, and recoverability. Lines of code and file counts do not determine risk.
-5. Complexity must serve a concrete need. Every artifact should help someone decide, verify, understand, or maintain.
-6. Trace meaningful relationships. Do not trace every line or require one-to-one mappings.
-7. Preserve alignment during change. Update affected claims and reconsider evidence whose assumptions no longer hold.
-
-### Terms
-
-| Term | Meaning |
+| Term | Plain meaning |
 |---|---|
-| Outcome | The useful result the work aims to achieve |
-| Requirement | An expected behavior or constraint with a source or rationale |
-| Acceptance criterion | An observable condition used to judge a particular result |
-| Definition of Done | Shared completion conditions for this project or class of work, in addition to task-specific criteria |
-| Contract | What a boundary promises and requires, including relevant failure behavior |
-| Feature | A recognizable system capability; it may span several components |
-| Work Record | The maintained account of a bounded change, investigation, or experiment |
+| Outcome | The useful result the work is meant to produce |
+| Requirement | An expected behavior or constraint, with a source or reason |
+| Acceptance criterion | An observable condition used to judge one result |
+| Definition of Done | Shared completion conditions for a project or type of work |
+| Contract | What a boundary needs, promises, and does when something fails |
+| Feature | A recognizable system capability; it may use several components |
+| Work Record | A maintained record for a bounded change, investigation, or experiment |
 | Decision record | The context, choice, alternatives, and consequences of a significant decision |
-| Evidence | An inspectable observation or result supporting a specified claim under stated conditions |
-| Traceability | Navigable relationships between intent, decisions, implementation, checks, and results |
+| Evidence | An inspectable observation or result that supports a particular claim under stated conditions |
+| Traceability | Navigable links between the intent, decisions, implementation, checks, and results |
 
-Explainability concerns the engineering system. It does not imply that an ML model's internal reasoning has been explained.
+EEM explains engineering behavior. It does not claim to explain the internal reasoning of an ML model.
 
-## 3. Working structure and traceability
+## 3. Keep three kinds of information separate
 
-Maintain three distinguishable kinds of information:
-
-| Kind | Examples | Establishes |
+| Kind of information | Examples | What it tells us |
 |---|---|---|
-| Intent and design | Requirements, contracts, design notes, decisions | What is expected and why |
-| Implementation | Code, configuration, schemas, models, hardware arrangements | What has been constructed |
+| Intent and design | Requirements, contracts, design notes, decisions | What should happen and why |
+| Implementation | Code, configuration, schemas, models, hardware arrangements | What has been built |
 | Verification evidence | Test runs, measurements, experiments, review findings | What was observed or assessed |
 
-A test definition describes a check; a test execution supplies a result. A design review may support a design-quality claim but cannot demonstrate runtime behavior by itself.
+A test definition describes a check. A test execution produces a result. A design review can support a claim about the design, but it cannot demonstrate runtime behavior on its own.
 
-Traceability joins these records. For example, a requirement can link to two features, a shared component, several acceptance checks, and the results from a particular revision. Conversely, a failing test should lead back to the behavior it protects.
+Traceability connects these records. One requirement may map to several components and checks. One component may support several requirements. A failing check should lead back to the behavior it protects.
 
-Use stable issue identifiers, symbols, repository paths, and revision identifiers where available. A link to a moving file can help navigation but cannot identify the exact version previously tested. Preserve that version in the evidence record.
+Use stable issue IDs, symbols, paths, and revision IDs where they exist. A link to a moving file helps navigation but does not identify the exact version that was tested. Store that version in the evidence record.
 
-Keep each fact in a clear authoritative location. Link to it from other views. A traceability table is optional if existing tools already expose the necessary relationships. Diagrams represent architecture views and may omit details; they must not contradict the behavior they claim to describe.
+Keep each fact in one clear, authoritative place and link to it from summaries. A traceability table is optional when the project already has a tool that exposes the same relationships. Diagrams may omit detail, but they must not contradict the behavior they claim to show.
 
 ## 4. Roles and authority
 
-A small project may have one person holding several roles:
+A small project may have one person doing several jobs:
 
-- Outcome owner: resolves product intent, scope, and acceptance trade-offs.
-- Implementer: makes the authorized change and records relevant results.
-- Verifier or reviewer: assesses the result against the criteria.
-- Explanation owner: needs to understand the relevant system boundary.
-- Release operator: performs release when authorized and applicable.
+- **Outcome owner:** resolves intent, scope, and acceptance trade-offs.
+- **Implementer:** makes the authorized change and records relevant results.
+- **Verifier or reviewer:** checks the result against the criteria.
+- **Explanation owner:** needs to understand the boundary well enough to maintain it.
+- **Release operator:** performs release actions when they are authorized and needed.
 
-Record names or roles only where ownership matters. Do not invent an approver for a routine task.
+Record names or roles only when ownership matters. Do not invent an approver for routine work.
 
-AI may inspect, draft, implement, test, and explain within its authorization. It must distinguish recommendations from accepted decisions and observations from assumptions. AI operating instructions govern how the assistant works; system contracts govern what the product does. A deterministic product rule does not eliminate implementation choices, and permission to explore designs does not permit altering agreed behavior.
+AI may inspect, draft, implement, test, and explain within its authorization. It must separate recommendations from accepted decisions and observations from assumptions. Instructions for the AI describe how it works; product contracts describe what the system does. Permission to explore a design does not permit changing agreed behavior.
 
-Independent review means assessment against original criteria and raw evidence without depending solely on the implementer's account. Another agent can provide a separate review pass when authorized, but it is not a substitute for a qualified human or specialist where one is needed. A self-review should be labeled as such.
+Independent review checks the original criteria and raw evidence without relying only on the implementer's story. Another agent can provide a separate review when authorized, but it is not a substitute for a qualified human or specialist when one is needed. Label a self-review as a self-review.
 
-## 5. Rigor selection
+## 5. Choose the right level of rigor
 
-Select a level at the start and revisit it when discoveries change the impact or uncertainty. State the reason in one sentence. These are working categories, not numerical risk scores.
+Choose a level at the start and revisit it if new information changes the impact or uncertainty. Write the reason in one sentence. These are working categories, not numerical risk scores.
 
-| Level | Typical conditions | Minimum useful treatment |
+| Level | Typical situation | Minimum useful treatment |
 |---|---|---|
-| Lightweight | Local, readily reversible change; well-understood behavior; limited consequences | Short outcome and boundary note, acceptance criteria, appropriate check, code/result links |
-| Standard | Several components, changed interface, user-visible behavior, or meaningful uncertainty | Work Record, relevant contract and failure cases, decision rationale, acceptance verification and affected regression checks |
-| Heightened | Potential material data loss, access-control failure, irreversible migration, consequential physical effects, or difficult recovery | Standard treatment plus explicit failure analysis, relevant specialist or independent review, representative verification, and recovery provisions where applicable |
+| Lightweight | Local, reversible change with familiar behavior and limited consequences | Short outcome and boundary note, acceptance criteria, an appropriate check, and code/result links |
+| Standard | Several components, a changed interface, user-visible behavior, or meaningful uncertainty | Work Record, relevant contract and failure cases, decision rationale, acceptance checks, and affected regression checks |
+| Heightened | Possible data loss, access-control failure, irreversible migration, physical consequences, or difficult recovery | Standard treatment plus failure analysis, specialist or independent review where needed, representative verification, and recovery provisions |
 
-One consequential risk can warrant heightened treatment even for a one-line change. A reversible UI text fix does not need the same treatment as a payment calculation or destructive migration.
+A one-line change can still need heightened treatment if its consequences are serious. A reversible UI text change usually does not need the same treatment as a payment calculation or destructive migration.
 
-For heightened work, identify the specific review and evidence needed. If unavailable, show the completion or release condition as pending. The classification does not itself authorize extra services, external mutations, or delegation.
+For heightened work, name the specific review and evidence required. If they are unavailable, show the completion or release condition as pending. The label does not authorize extra services, external mutations, or delegation by itself.
 
-Human explanation depth depends on who needs to operate or maintain the result. A learning project may require a walkthrough for a small change. A routine text fix may record the check as not required.
+The human explanation depth depends on who must operate or maintain the result. A learning project may need a walkthrough for a small change. A routine text fix may record the check as not required.
 
-## 6. Lifecycle
+## 6. The work loop
 
-### Frame
+### Frame the work
 
-Identify the outcome, current state, relevant requirements, scope, uncertainty, working mode, and rigor. For existing systems, inspect before proposing structural changes. Distinguish observed behavior from behavior inferred from names or comments.
+Identify the outcome, current state, relevant requirements, scope, uncertainty, workflow mode, and rigor. With an existing system, inspect before proposing structural changes. Separate observed behavior from guesses based on names or comments.
 
-### Plan
+### Plan the check
 
-Define acceptance criteria and how each can be assessed. State important boundaries and decisions. Specify non-goals when they prevent likely scope drift. Keep criteria independent of the proposed implementation where possible.
+Define acceptance criteria and how each one can be assessed. Record important boundaries and decisions. Add non-goals when they prevent likely scope drift. Keep criteria independent of the proposed implementation where possible.
 
 ### Implement or investigate
 
-Make a bounded change or collect relevant observations. Keep ongoing findings in the Work Record when they affect a decision. Reuse established conventions. If findings undermine the plan, return to framing or design and record the material change.
+Make a bounded change or collect the observations needed to answer the question. Keep findings in the Work Record when they affect a decision. Reuse project conventions. If the findings undermine the plan, return to framing or design and record the change in direction.
 
-### Verify
+### Verify the result
 
-Assess the material criteria and relevant neighboring behavior. A passing local check supports its covered conditions; it does not automatically establish integration, production behavior, or release readiness.
+Assess the material criteria and relevant neighboring behavior. A passing local check supports the conditions it covers; it does not automatically prove integration, production behavior, or release readiness.
 
-### Explain
+### Explain the result
 
-Provide the needed system map, rationale, evidence interpretation, or walkthrough. Perform the human check when required and possible. Finish independent technical work if that check is pending.
+Provide the needed system map, decision rationale, interpretation of evidence, or walkthrough. Perform the human check when it is required and possible. Technical work can continue while that check is pending.
 
 ### Close or hand off
 
-Update affected records and report distinct statuses. Identify unresolved conditions and their owners. Release only as part of the actual authorization and project process.
+Update the records affected by the change. Report separate statuses and name unresolved conditions and their owners. Treat release as its own authorized project action.
 
-This lifecycle repeats. Do not defer all documentation and traceability until the end, and do not require every artifact to be finalized before learning through implementation.
+The loop repeats. Do not leave all documentation and traceability until the end, and do not demand that every artifact be perfect before implementation teaches you something new.
 
 ## 7. Verification and evidence
 
-### Choose the check from the claim
+### Choose a check that matches the claim
 
-- Pure calculation: examples, boundary cases, properties, or comparison to an independent reference.
-- Component interaction: integration checks, including relevant timeout and failure behavior.
-- User workflow: acceptance or UI checks of the stated scenario.
-- Hardware interaction: simulation and physical observation where the physical claim requires it.
-- Model or data claim: suitable datasets, provenance, evaluation design, and stated limitations.
-- Non-executable change: inspection, rendering, or link checks where these address the actual risk.
+- **Calculation:** examples, boundary cases, properties, or comparison with an independent reference.
+- **Component interaction:** integration checks, including relevant timeout and failure behavior.
+- **User workflow:** acceptance or UI checks for the stated scenario.
+- **Hardware interaction:** simulation and physical observation when the claim is physical.
+- **Model or data claim:** suitable data, provenance, evaluation design, and stated limitations.
+- **Non-executable change:** inspection, rendering, or link checks when they address the actual risk.
 
-These are options. Avoid duplicating a formula in a test and treating agreement as independent confirmation. Avoid introducing tests solely to satisfy a template.
+These are options, not a checklist to complete every time. Do not copy the same formula into code and a test and call that independent confirmation. Do not add a test just to satisfy a template.
 
-### Evidence record
+### Record the evidence
 
-Record the claim or acceptance criterion, method, result, artifact location, time, and conditions that materially affect interpretation. Include the code revision or change snapshot, environment, configuration, and data/model identifiers when relevant. Preserve failures as well as successes when they affect the conclusion.
+For each material result, record the claim or acceptance criterion, method, result, artifact location, time, and conditions that affect interpretation. Include the code revision or change snapshot, environment, configuration, and data or model versions when they matter. Preserve failures as well as successes when they change the conclusion.
 
-An evidence identifier may reference a CI run, test report, measurement sheet, screenshot, review, or recorded manual check. Do not copy sensitive raw data into documentation when a controlled reference suffices.
+An evidence ID may point to a CI run, test report, measurement sheet, screenshot, review, or recorded manual check. Do not copy sensitive raw data into documentation when a controlled reference is enough.
 
-Use separate fields:
+Use separate fields for:
 
-- Result: passed, failed, not run, or inconclusive.
-- Applicability: current, needs reassessment, or superseded.
+- **Result:** passed, failed, not run, or inconclusive.
+- **Applicability:** current, needs reassessment, or superseded.
 
-An old passing result remains historically passed even when it needs reassessment for new code.
+An old passing result stays historically passed even when a later change means it needs reassessment.
 
-### Changed or conflicting evidence
+### When evidence changes or conflicts
 
-When behavior, configuration, dependencies, datasets, or assumptions change, identify affected claims and check whether their prior evidence still applies. Re-run or replace the relevant checks; do not invalidate unrelated evidence automatically.
+When behavior, configuration, dependencies, data, models, or assumptions change, identify the claims that may be affected. Rerun or replace the relevant checks. Do not discard unrelated evidence automatically.
 
-If sources conflict, record the disagreement, versions, and scope of the observations. Reproduce or investigate it before presenting a unified conclusion. Do not select only the result that supports completion.
+If sources disagree, record the disagreement, versions, and scope of each observation. Investigate before presenting one conclusion. Do not choose only the result that supports completion.
 
-### Bounded correction
+### Correct a failure in a bounded way
 
-For a failure, form a specific explanation, make a scoped correction, and rerun the relevant checks. Broaden verification when the failure reveals wider impact. When attempts repeat without new information, stop retrying, preserve evidence, and identify the missing capability or decision.
+Form a specific explanation, make a scoped correction, and rerun the relevant checks. Broaden verification when the failure reveals wider impact. When repeated attempts produce no new information, stop retrying, preserve the evidence, and identify the missing capability or decision.
 
-## 8. Human explanation
+## 8. Check human understanding
 
-Assess relevant dimensions, without treating them as a validated score or a mandatory progression:
+For important work, choose the explanation dimensions that matter:
 
-| Dimension | A person can demonstrate |
+| Dimension | The person can demonstrate that they can… |
 |---|---|
-| Locate | Find the entry point and the important components |
+| Locate | Find the entry point and important components |
 | Contract | Describe inputs, outputs, limits, side effects, and failures |
 | Rationale | Explain a significant design choice and its trade-off |
-| Evidence | Explain what a result supports and what it leaves unknown |
-| Diagnose | Identify where to look first for a plausible failure |
+| Evidence | Say what a result supports and what it leaves unknown |
+| Diagnose | Identify a sensible first place to look when it fails |
 
-For a required check, choose a representative scenario and ask the responsible person to explain it in their own words, using the repository and documents if needed. For example: "The external service times out. What should the user see, where is that behavior implemented, and what check supports it?"
+Use a representative scenario and ask the responsible person to explain it in their own words, using the repository and documents when needed. For example: “The external service times out. What should the user see, where is that behavior implemented, and what check supports it?”
 
-Record who participated, which boundary and scenario were checked, the dimensions addressed, and any gaps. Use completed, pending, or not required with a reason. Completion means the selected scope was demonstrated, not universal mastery of the system.
+Record who participated, the boundary and scenario, the dimensions checked, and any gaps. Use **completed**, **pending**, or **not required**, with a reason. Completion means the selected scope was demonstrated; it does not mean universal mastery of the whole system.
 
-If a gap appears, improve the explanation or design, practice the relevant scenario, and revisit the gap. AI may prepare questions and feedback. It cannot mark the person's understanding complete merely because it supplied a correct answer itself.
+If a gap appears, improve the explanation or design, practice the scenario, and revisit the gap. AI can prepare questions and feedback. It cannot mark a person's understanding complete just because it supplied a correct answer.
 
 ## 9. Completion and exceptions
 
-Keep separate statuses:
+Keep these statuses separate:
 
 | Area | Suggested states |
 |---|---|
@@ -198,18 +179,20 @@ Keep separate statuses:
 | Work disposition | Open, closed, closed with exception |
 | Release, if relevant | Not requested, pending, released, rolled back |
 
-The work can close when its agreed acceptance conditions are supported, required explanation checks are complete, affected records are current, and remaining limitations are stated. An investigation may be complete with a well-supported negative or inconclusive finding if that satisfies its investigation objective; this is distinct from claiming the underlying product requirement passed.
+Close the work when its acceptance conditions are supported, required explanation checks are complete, affected records are current, and remaining limits are stated.
 
-A material criterion that failed or was not checked remains visible. Do not silently change it into a pass. If the outcome owner accepts an exception within their authority, record the unmet condition, available evidence, consequence, compensating measure if relevant, owner, and review trigger or expiry. Use closed with exception. The assistant cannot grant itself an exception to a user's requirement.
+An investigation can be complete with a supported negative or inconclusive result when that answers its investigation question. That does not mean the underlying product requirement passed.
 
-Release readiness and task completion are related but separate. A completed prototype need not be ready for production. A released system may have a documented exception rather than all checks passed.
+A failed or unchecked material criterion stays visible. Do not quietly turn it into a pass. If the outcome owner accepts an exception within their authority, record the unmet condition, evidence, consequence, compensating measure if relevant, owner, and review trigger or expiry. Use **closed with exception**. The assistant cannot grant itself an exception.
 
-## 10. Maintenance and adoption
+Task completion and release readiness are separate. A completed prototype may still be unsuitable for production. A released system may carry a documented exception.
 
-Start with a short Work Record and links for one capability. Extend coverage when a change creates a practical need. Avoid repository-wide renaming, blanket file limits, or mandatory feature folders.
+## 10. Keep the method healthy
 
-When an interface or assumption changes, inspect linked consumers, checks, explanations, and decisions. Update the affected records in the same change where practical. A historical decision should be marked superseded and linked to its replacement rather than rewritten to suggest it was always different.
+Start with a short Work Record and links for one capability. Add detail when a real change creates a need. Avoid repository-wide renaming, blanket file limits, and mandatory feature folders.
 
-During handoff, include the relevant revision, current status, strongest supporting evidence, known limitations, and the next owner action. Keep a durable record for work that will span sessions.
+When an interface or assumption changes, inspect linked consumers, checks, explanations, and decisions. Update affected records in the same change when practical. Mark an old decision as superseded and link to its replacement rather than rewriting history.
 
-Evaluate EEM through the [trial plan](trial-plan.md). Change its rules in response to observed problems and test whether the revision helps. Record material method changes and recheck prior successful scenarios for regressions. v0.1 does not claim novelty for established engineering practices or verified fidelity to external methodologies mentioned in the original discussion.
+During a handoff, include the relevant revision, current status, strongest evidence, known limits, and the next owner's action. Keep a durable record for work that spans sessions.
+
+Use the [trial plan](trial-plan.md) to assess EEM. Change the method in response to observed problems and test whether the change helps. Record material method revisions and recheck earlier successful scenarios for regressions. v0.1 does not claim novelty for established engineering practices or verified fidelity to external methods mentioned in the original discussion.

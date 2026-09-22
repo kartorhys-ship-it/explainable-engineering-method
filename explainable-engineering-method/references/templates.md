@@ -1,14 +1,18 @@
 # EEM templates
 
-Copy only what the work needs. Bracketed text is an intentional field to fill, not a mandatory new file. Existing issue and pull-request formats may carry the same information.
+These templates are starting points, not forms that every task must complete in full. Copy the smallest one that gives the work a useful record. An issue, task, pull request, notebook, or existing project document can carry the same information.
+
+Text in `[square brackets]` is a field to fill in. It is not a request to create another file. Delete fields that do not apply.
 
 ## Lightweight Work Record
+
+Use this for a small, local, and reversible change.
 
 ```markdown
 # [ID or title]
 
 Outcome: [useful result and reason]
-Mode / rigor: [mode, level, one-sentence rationale]
+Mode / rigor: [mode, level, one-sentence reason]
 Scope and boundaries: [change, relevant input/output, exclusions]
 
 Acceptance:
@@ -16,13 +20,15 @@ Acceptance:
 
 Implementation: [source links and relevant revision/snapshot]
 Verification: [criterion -> check -> actual result/evidence]
-Limitations: [remaining uncertainty or none identified within checked scope]
+Limitations: [remaining uncertainty, or none identified within the checked scope]
 Explanation: [completed / pending / not required; reason and scope]
 Status: [implementation; verification; work disposition; release if relevant]
 Next action: [action and owner, or none]
 ```
 
 ## Extended Work Record
+
+Use this when several components, a changed interface, meaningful uncertainty, or a higher-consequence failure makes the extra context useful.
 
 ```markdown
 # [ID]: [title]
@@ -31,7 +37,7 @@ Next action: [action and owner, or none]
 Outcome and source: [problem, user need, or investigation question]
 Mode: [workflow]
 Rigor: [level and reason]
-Responsible people: [only roles whose ownership matters]
+Responsible people: [roles whose ownership matters]
 Related requirements: [links]
 Current behavior: [observed behavior and evidence]
 Unknowns/assumptions: [what is inferred or unresolved]
@@ -46,9 +52,9 @@ Failures: [trigger -> expected handling]
 Compatibility: [consumers and preserved behavior]
 
 ## Approach
-Design: [sufficient detail to understand the change]
+Design: [enough detail to understand the change]
 Significant decisions: [links or short rationale]
-Risks and recovery: [only relevant failure consequences and responses]
+Risks and recovery: [relevant consequences and responses]
 
 ## Acceptance and evidence
 | Criterion | Check/method | Result | Evidence | Applicability |
@@ -67,6 +73,8 @@ Exceptions: [none or explicit record]
 
 ## Decision record
 
+Use this for a choice that someone may need to understand or revisit later. Routine implementation details do not need decision records.
+
 ```markdown
 # [Decision ID]: [choice]
 Status: [proposed / accepted / superseded]
@@ -80,9 +88,9 @@ Related work/evidence: [links]
 Supersedes / superseded by: [link if applicable]
 ```
 
-Do not write decision records for every routine implementation detail.
-
 ## Evidence record
+
+Use this to show exactly what a check supports. A test definition is the method; an execution of that test is the evidence.
 
 ```markdown
 # [Evidence ID]
@@ -98,9 +106,11 @@ Applicability: [current / needs reassessment / superseded]
 Reassessment reason/replacement: [if applicable]
 ```
 
-Omit irrelevant version fields. Do not omit a version that materially changes the claim's meaning.
+Omit irrelevant version fields. Keep any version that changes the meaning of the claim.
 
 ## Traceability view
+
+Use this when a reader needs a visible path from a requirement or question to the code and its supporting check. Many-to-many relationships may need several rows.
 
 ```markdown
 | Requirement or question | Work | Implementation boundary | Check | Evidence | Gap |
@@ -108,9 +118,11 @@ Omit irrelevant version fields. Do not omit a version that materially changes th
 | [link] | [link] | [path/symbol/interface] | [link] | [versioned result] | [none or specific gap] |
 ```
 
-Use multiple rows or linked lists for many-to-many relationships. Avoid forcing a single feature or test to represent a wider requirement.
+Do not force one feature or one test to represent a wider requirement when the real relationship is broader.
 
 ## Human explanation record
+
+Use this when the responsible person needs to demonstrate understanding of a boundary.
 
 ```markdown
 Boundary: [capability being explained]
@@ -123,7 +135,11 @@ Status: [completed / pending / not required]
 Reason if not required: [scope rationale]
 ```
 
+An assistant-written explanation is preparation material. It does not replace this check when the check is required.
+
 ## Exception record
+
+Use this when an outcome owner accepts a known gap within their authority.
 
 ```markdown
 Unmet condition: [criterion or required check]
@@ -136,6 +152,8 @@ Work status: [open until accepted; closed with exception if accepted]
 ```
 
 ## Handoff
+
+Use this when another person or another work session needs to continue the work.
 
 ```markdown
 Result: [what changed or was learned]

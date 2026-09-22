@@ -1,130 +1,132 @@
 # EEM workflows
 
-Use the shared rules in [method.md](method.md). Choose the mode from the requested outcome. Combine modes only when the work needs it; a migration can include a feature change, and an incident can lead to a later bug fix.
+Use the rules in [method.md](method.md), then choose the workflow that matches the work in front of you. Do not run every workflow. Mix them only when the task really needs it; for example, a migration can include a feature change, and an incident can lead to a later bug fix.
 
-## Greenfield system
+Each workflow has an entry condition, a practical path, and an exit condition. The exit condition tells you what the work has established. It does not claim more than that.
 
-**Entry:** A desired outcome without an established implementation.
+## Starting a new system
 
-1. Identify users or operators, their important jobs, constraints, and success scenarios. Record unresolved product assumptions.
-2. Describe the system boundary and external dependencies. Select the simplest architecture that addresses the actual constraints; record significant trade-offs.
-3. Select a thin end-to-end capability that produces an observable result. Define its contracts and acceptance checks.
-4. Implement and verify that slice, using substitutes for unavailable dependencies only with the limitation recorded.
-5. Explain the flow and failure behavior. Use findings to revise the next slice and the system map.
+**Use this when:** You have a desired result but no established implementation.
 
-**Exit:** The agreed slice meets its criteria; deferred capabilities are visible. A working slice is not evidence that every planned feature works.
+1. Identify the users or operators, their important jobs, constraints, and success scenarios. Write down unresolved assumptions.
+2. Describe what is inside the system boundary and what is outside it. Choose the simplest architecture that fits the real constraints, and record meaningful trade-offs.
+3. Pick a thin end-to-end slice that produces an observable result. Define its boundary and acceptance checks.
+4. Build and verify that slice. If a dependency is unavailable, use a substitute only when its limitation is recorded.
+5. Explain the flow and failure behavior. Use what you learned to shape the next slice and update the system map.
 
-**Common mistake:** Designing a large hierarchy of subsystems and documents before testing any important assumption.
+**Done when:** The agreed slice meets its criteria and deferred capabilities are visible. One working slice does not prove that every planned feature works.
 
-## Existing-system discovery
+**Watch for:** Designing a large system and a large document hierarchy before testing an important assumption.
 
-**Entry:** A request to understand an existing codebase or prepare a change.
+## Understanding an existing system
 
-1. Inspect project instructions, build/run entry points, architecture notes, tests, and relevant operational material.
-2. Follow one representative behavior from its input through components and dependencies to its output or side effect.
-3. Separate directly observed facts, source-supported interpretations, and unknowns. Run relevant non-mutating checks where feasible.
-4. Map the existing layout and identify the strongest available verification for the selected behavior.
-5. Report gaps and a bounded next action. If implementation is requested, continue using the applicable change workflow.
+**Use this when:** You need to understand a codebase or prepare a change.
 
-**Exit:** The selected boundary is mapped with evidence and explicit unknowns. Discovery-only work ends with findings, without implementing proposed repairs.
+1. Read the project instructions, build and run entry points, architecture notes, tests, and relevant operational material.
+2. Follow one representative behavior from input through its components and dependencies to its output or side effect.
+3. Separate directly observed facts, interpretations supported by source, and unknowns. Run useful non-mutating checks when possible.
+4. Map the existing layout and find the strongest available verification for the selected behavior.
+5. Report gaps and a bounded next action. If implementation is requested, continue with the matching change workflow.
 
-**Common mistake:** Moving source files to match EEM before understanding their conventions and dependencies.
+**Done when:** The selected boundary is mapped with evidence and explicit unknowns. Discovery-only work ends with findings; it does not implement proposed repairs.
 
-## Feature or behavior change
+**Watch for:** Moving files to fit EEM before understanding the project's own conventions and dependencies.
 
-**Entry:** An agreed capability or change to existing behavior.
+## Changing a feature or behavior
 
-1. Establish current and expected behavior with concrete examples. Identify compatibility requirements and non-goals.
-2. Trace affected producers, consumers, storage, and external interfaces. Select the relevant failure cases.
-3. Define acceptance criteria before coding. Record a decision only if a meaningful choice needs future explanation.
-4. Implement a bounded slice using existing conventions.
-5. Verify new behavior and affected existing behavior. Reassess linked evidence and update explanations.
+**Use this when:** You have an agreed capability or need to change existing behavior.
 
-**Exit:** The change meets its acceptance criteria, required understanding is checked, and any release action has its own explicit status.
+1. Describe current and expected behavior with concrete examples. Identify compatibility requirements and non-goals.
+2. Follow the affected producers, consumers, storage, and external interfaces. Choose the failure cases that matter.
+3. Define acceptance criteria before coding. Record a decision when a meaningful choice needs to be understood later.
+4. Implement a bounded slice using the project's conventions.
+5. Verify the new behavior and affected existing behavior. Recheck linked evidence and update the explanation.
 
-**Common mistake:** Testing only the new happy path while breaking an existing caller's contract.
+**Done when:** The change meets its criteria, required human understanding is checked, and any release action has its own status.
 
-## Bug diagnosis and repair
+**Watch for:** Testing only the new happy path while breaking an existing caller's contract.
 
-**Entry:** Observed behavior differs from an expectation.
+## Diagnosing and repairing a bug
 
-1. Record the symptom, expected behavior, environment, and smallest available reproduction. Confirm that the expectation has a valid source.
-2. Trace the failing path. Distinguish the immediate mechanism from an upstream or systemic cause where evidence permits.
-3. For diagnosis-only requests, explain the cause, supporting evidence, uncertainty, and proposed repair. Stop before implementation.
-4. When repair is authorized, add or select a check that detects the original defect, where practical. Change the narrowest responsible boundary that adequately resolves the cause.
-5. Verify the reproduction and relevant neighboring scenarios. If the defect cannot be reproduced, qualify confidence and state what observation would confirm the fix.
+**Use this when:** Observed behavior differs from a valid expectation.
 
-**Exit:** Diagnosis supports a cause at the available confidence, or the authorized repair meets its criteria. Do not label a hypothesis as a demonstrated root cause.
+1. Record the symptom, expected behavior, environment, and smallest available reproduction. Confirm the source of the expectation.
+2. Follow the failing path. Separate the immediate mechanism from a possible upstream or wider cause when the evidence allows it.
+3. For diagnosis-only requests, explain the cause, evidence, uncertainty, and proposed repair. Stop before implementation.
+4. When repair is authorized, add or choose a check that detects the original defect where practical. Change the narrowest boundary that actually fixes the cause.
+5. Verify the reproduction and relevant neighboring cases. If the defect cannot be reproduced, state the confidence level and what observation would confirm the repair.
 
-**Common mistake:** Broad refactoring while searching for a bug, obscuring both causality and verification.
+**Done when:** The diagnosis supports a cause at the available confidence, or the authorized repair meets its criteria. Do not call a hypothesis a demonstrated root cause.
 
-## Incident
+**Watch for:** Broad refactoring during the search, which can hide both causality and verification.
 
-**Entry:** An active operational problem needing restoration or containment.
+## Handling an incident
 
-1. Establish the observed impact and authority to take operational actions. Preserve a minimal timeline and relevant evidence.
-2. Choose an authorized stabilization action based on current observations and recovery options. During active impact, defer documentation that does not aid the decision.
-3. Verify stabilization using the affected user or operational indicators. Distinguish service restoration from root-cause resolution.
+**Use this when:** An active operational problem needs restoration or containment.
+
+1. Establish the observed impact and the authority to take operational actions. Preserve a short timeline and relevant evidence.
+2. Choose an authorized stabilization action using current observations and recovery options. During active impact, postpone documentation that cannot help the decision.
+3. Verify stabilization through affected-user or operational indicators. Keep service restoration separate from root-cause resolution.
 4. Investigate the cause, contributing conditions, and missed detection when the system is stable enough.
-5. Link follow-up fixes, monitoring improvements, and a concise explanation of what remains uncertain.
+5. Link follow-up fixes and monitoring improvements. State what remains uncertain.
 
-**Exit:** Stabilization and investigation have separate results and owners. If the request covers only stabilization, hand off the investigation explicitly.
+**Done when:** Stabilization and investigation have separate results and owners. If the request covered only stabilization, hand off the investigation explicitly.
 
-**Common mistake:** Assuming service recovery proves the suspected cause was correct.
+**Watch for:** Treating service recovery as proof that the suspected cause was correct.
 
-## Refactor
+## Refactoring a system
 
-**Entry:** A structural improvement with intended behavior preserved.
+**Use this when:** You want to improve structure while keeping intended behavior.
 
-1. State the concrete maintenance or comprehension problem. Name the behavior and compatibility properties that must remain unchanged.
-2. Inspect existing checks and add characterization where uncertainty warrants it. Characterization records current behavior; flag known defects rather than silently making them requirements.
-3. Choose a bounded restructuring and a way to judge the claimed improvement, such as a simpler dependency path or clearer ownership.
-4. Make the change while keeping behavior changes separately visible.
-5. Verify preservation and show how the structural change addresses the stated problem. Update affected navigation and decisions.
+1. State the maintenance or comprehension problem in concrete terms. Name the behavior and compatibility properties that must stay unchanged.
+2. Inspect existing checks. Add characterization checks when uncertainty makes them useful. Mark known defects as defects instead of silently turning them into requirements.
+3. Choose a bounded restructuring and a way to judge the claimed improvement, such as a clearer dependency path or clearer ownership.
+4. Make the structural change while keeping behavior changes visible as separate work.
+5. Verify preserved behavior and show how the new structure addresses the stated problem. Update navigation and decisions.
 
-**Exit:** Preserved behavior is supported under the checked conditions, and the improvement is demonstrated rather than asserted from renamed files.
+**Done when:** Preserved behavior is supported under the checked conditions and the improvement is demonstrated. Renaming files alone is not evidence of better maintainability.
 
-**Common mistake:** Treating fewer files or shorter code as sufficient evidence of improved maintainability.
+**Watch for:** Treating fewer files or shorter code as proof that the system is easier to maintain.
 
-## Migration
+## Migrating data or interfaces
 
-**Entry:** A change to stored data, schemas, interfaces, deployment arrangements, or another stateful boundary.
+**Use this when:** You are changing stored data, schemas, interfaces, deployment arrangements, or another stateful boundary.
 
-1. Identify affected versions, data, consumers, sequencing, and compatibility needs. Determine whether operations can be reversed or safely repeated.
-2. Define success and interruption behavior, including validation of the resulting state.
-3. Establish recovery arrangements appropriate to the impact. When rollback is impossible, make the recovery limitation explicit and identify the authorized decision needed before the irreversible action.
-4. Rehearse against a representative permitted environment or sample. Verify constraints, counts or other relevant invariants, and mixed-version behavior where applicable.
-5. Execute the actual migration only when authorized. Observe the result, retain evidence, and report the actual recovery posture.
+1. Identify affected versions, data, consumers, sequencing, and compatibility needs. Decide whether the operation can be reversed or safely repeated.
+2. Define success and interruption behavior, including how the resulting state will be checked.
+3. Plan recovery for the level of impact. If rollback is impossible, state that clearly and identify the authorized decision needed before the irreversible action.
+4. Rehearse against a permitted representative environment or sample. Check constraints, counts or other relevant invariants, and mixed-version behavior when it matters.
+5. Execute the real migration only when authorized. Observe the result, retain evidence, and report the actual recovery posture.
 
-**Exit:** A prepared migration may be implementation-complete while execution is pending. An executed migration requires evidence about the resulting state, not merely a successful command exit.
+**Done when:** A prepared migration can be complete while execution is pending. An executed migration needs evidence about the resulting state, not just a successful command exit.
 
-**Common mistake:** Calling a backup a recovery plan without knowing whether it is usable.
+**Watch for:** Calling a backup a recovery plan without knowing whether it can actually be restored.
 
-## Prototype or experiment
+## Running a prototype or experiment
 
-**Entry:** An uncertain feasibility question, design choice, or hypothesis.
+**Use this when:** You are testing an uncertain idea, design choice, or hypothesis.
 
-1. State the question, alternatives, constraints, and what observation would inform the next decision.
-2. Choose the smallest useful experiment. Record assumptions, relevant baselines, sampling, and limits before interpreting results.
+1. State the question, alternatives, constraints, and the observation that would inform the next decision.
+2. Choose the smallest useful experiment. Record assumptions, baselines, sampling, and limits before interpreting results.
 3. Run it with enough version and environment information for the required reproducibility.
-4. Separate observations from interpretation. Report negative and inconclusive findings along with positive findings.
-5. Decide whether the evidence supports continuation, revision, stopping, or a larger test. Do not silently promote prototype code into a production component.
+4. Separate observations from interpretation. Report negative and inconclusive results along with positive results.
+5. Decide whether the evidence supports continuing, revising, stopping, or running a larger test. Do not quietly promote prototype code to a production component.
 
-**Exit:** The investigation question is addressed to the agreed scope, even if the desired approach failed. Production readiness remains unassessed unless it was explicitly included.
+**Done when:** The agreed question has been addressed, even if the approach failed. Production readiness remains unassessed unless it was explicitly part of the experiment.
 
-**Common mistake:** Redefining the success threshold after seeing results and reporting the revised threshold as if it were original.
+**Watch for:** Changing the success threshold after seeing the result and reporting the new threshold as if it had been planned from the start.
 
-## Domain adaptations
+## Add domain-specific checks when needed
 
-Use these additions only when their claims are relevant. They are prompts for engineering judgment, not comprehensive domain standards.
+These prompts help you choose relevant checks. They are not complete domain standards.
 
-| Domain | Additional attention |
+| Domain | Pay attention to |
 |---|---|
-| Web/mobile/UI | Interaction and error states, accessibility where required, devices or viewports covered, network behavior, client/server contract |
+| Web, mobile, and UI | Interaction and error states, accessibility where required, devices or viewports covered, network behavior, client/server contract |
 | Games | Player-visible behavior, deterministic versus variable behavior, state transitions, performance conditions, engine and asset versions |
-| Data pipelines | Source provenance, grain, schema, freshness, duplicate/missing data behavior, rerun and partial-failure semantics |
-| AI/ML | Dataset and model versions, evaluation independence, leakage risks, representative conditions, uncertainty, fallback behavior |
-| Embedded/IoT | Units, calibration, physical limits, timing, device/firmware versions, disconnect and power-loss behavior, physical validation |
-| Libraries/APIs | Public compatibility, error semantics, supported versions, callers affected, deprecation or migration behavior |
+| Data pipelines | Source provenance, data grain, schema, freshness, duplicate and missing data behavior, reruns, and partial failures |
+| AI and ML | Dataset and model versions, evaluation independence, leakage risks, representative conditions, uncertainty, and fallback behavior |
+| Embedded and IoT | Units, calibration, physical limits, timing, device and firmware versions, disconnect and power-loss behavior, physical validation |
+| Libraries and APIs | Public compatibility, error meaning, supported versions, affected callers, deprecation, and migration behavior |
 
-A model benchmark does not establish a hardware system's end-to-end reliability. A UI screenshot does not establish accessibility. Specify the exact claim each observation supports.
+A model benchmark does not establish end-to-end hardware reliability. A UI screenshot does not establish accessibility. Always state the exact claim that an observation supports.
